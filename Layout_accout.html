@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Shop mô hình Jung Nguyen</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <!-- Nhúng Bootstrap -->
+    <link rel="stylesheet" href="lib/bootstrap.css">
+    <script src="lib/bootstrap.js"></script>
+    <!-- Nhúng AngularJS -->
+    <!-- Lưu ý: Nhúng file angular-route.js sau file angular.js -->
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-route.js"></script>
+    <script src="lib/font-fontawesome-ae333ffef2.js"></script>
+
+
+    <script>
+        var app = angular.module('myApp', ['ngRoute']);
+
+        app.config(function ($routeProvider) {
+            $routeProvider
+                .when("/", {  // Đường dẫn mặc định
+                    templateUrl: "page/TrangChu.html",
+                    controller: "HomePageController"
+                })
+                .when("/Home-page", {
+                    templateUrl: "page/TrangChu.html",
+                    controller: "HomePageController"
+                })
+                .when("/Gio-hang", {
+                    templateUrl: "page/GioHang.html",
+                    controller: "GioHangController"
+                })
+                .when("/Tim-Kiem", {
+                    templateUrl: "page/Search.html",
+                    controller: 'SearchProductController'
+                })
+                .when("/Xac-nhan-don-hang", {
+                    templateUrl: "page/ConfirmDH.html",
+                    controller: "ConfirmDH"
+                })
+                .when("/Detail-product/:id", {
+                    templateUrl: "page/Detail_product.html",
+                    controller: "Detailproduct"
+                })
+        });
+
+        app.controller('LayoutAcCtrl', function ($scope, $rootScope, $http) {
+            $rootScope.cartNumber = 0;
+
+            // Hàm để cập nhật cartNumber
+            $rootScope.updateCartNumber = function () {
+                $http({
+                    method: 'GET',
+                    url: 'http://localhost:3000/gio-hang'
+                }).then(function (response) {
+                    // Tính tổng số bản ghi từ danh sách sản phẩm trong giỏ hàng
+                    let totalRecords = response.data.length;
+
+                    // Cập nhật cartNumber
+                    $rootScope.cartNumber = totalRecords;
+
+                });
+            };
+
+            $scope.addToCart = function (productId) {
+                // Thực hiện thêm sản phẩm vào giỏ hàng
+
+                // Cập nhật lại cartNumber sau khi thêm sản phẩm vào giỏ hàng
+                $rootScope.updateCartNumber();
+            };
+
+            // Gọi hàm cập nhật cartNumber khi trang layout được load
+            $rootScope.updateCartNumber();
+        });
+
+    </script>
+    <script src="page/TrangChu.js"></script>
+    <script src="page/Detail_product.js"></script>
+    <script src="page/Search.js"></script>
+    <script src="page/GioHang.js"></script>
+    <script src="page/ConfirmDH.js"></script>
+
+</head>
+
+<body ng-app="myApp" ng-controller="LayoutAcCtrl">
+    <!--Khu vực header-->
+    <nav class="navbar navbar-expand-md bg-light shadow-sm" >
+
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <!--Logo-->
+                <a href="#!Home-page" class="me-1  bg-light ">
+                    <img src="img/logo-removebg-preview.png" style="height: 50px;">
+                </a>
+            </div>
+
+            <div class="d-md-flex ">
+                <div class="input-group">
+                    <input type="text" class=" form-control" placeholder="Bạn đang cần tìm gì ?">
+                    <div class="input-group-append">
+                        <button class=" btn btn-primary rounded-end-1  rounded-0" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="btn-group ms-1">
+                    <a href="#!Tim-Kiem" class="btn  border-0">
+                        <i class="fas fa-filter "></i>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="d-flex justify-content-end">
+                <!--Gio hàng-->
+                <div>
+                    <ul class="navbar-nav mt-2 mb-1">
+                        <li class="nav-item">
+                            <a href="#!Gio-hang">
+                                <button class="btn border-0 text-dark position-relative">
+                                    <i class="fa-solid fa-cart-shopping fa-lg"></i>
+                                    <span class="badge  bg-danger rounded-pill position-absolute ">{{cartNumber}}</span>
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <!--Button đăng nhập và đăng ký-->
+                <ul class="navbar-nav mt-1 ms-5 ">
+                    <div class="dropdown">
+                        <button class="btn" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end " style="max-width: fit-content;">
+                            <li>
+                                <a class="dropdown-item rounded-1 btn btn-info bg-" href="page/Login.html">Đăng xuất</a>
+                            </li>
+                        </ul>
+                    </div>
+                </ul>
+            </div>
+
+
+
+        </div>
+
+    </nav>
+
+
+
+    <div class="container mt-4" style="min-height: calc(100vh - 131px);  " ng-view>
+
+    </div>
+
+    <!--Khu vực footer-->
+    <div class="container-fluid bg-light   border-top mt-2 ">
+        <div class="container " style="font-family: 'Times New Roman', Times, serif;">
+            <div class="row mt-2">
+                <div class="col-6 ">
+                    <h5>Liên hệ</h5>
+                    <p>Địa chỉ: 123 Đường Đõ, Quận Nam Từ Liêm, Thành phố Hà Nội</p>
+                    <p>Số điện thoại: 0123 456 789</p>
+                    <p>Email: dungnx291@gmail.com</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Về chúng tôi</h5>
+                    <div>
+                        <img src="img/BoCongThuong.png" style="width: 250px;">
+                    </div>
+
+                    <p>MST : 000020030400</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
