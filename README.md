@@ -30,10 +30,6 @@ To get a local copy up and running follow these simple steps:
 
 We welcome contributions to the Shop Mô Hình Jung Nguyen project. If you have suggestions or improvements, feel free to fork the repo and create a pull request.
 
-## License 📜
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
 ---
 
 Enjoy shopping with Shop Mô Hình Jung Nguyen - Your ultimate destination for model kits! 🛍️
